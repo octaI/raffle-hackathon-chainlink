@@ -55,7 +55,6 @@ describe(`Dynamic Raffle with seven winners`, async () => {
             merkleRoot,
 
         )
-        console.log("deployed")
         await mockVRFCoordinator.fundSubscription(subscriptionId, parseEther("10"));
         await mockVRFCoordinator.addConsumer(subscriptionId, dynamicRaffle.address)
 
@@ -66,9 +65,7 @@ describe(`Dynamic Raffle with seven winners`, async () => {
         it(`should run raffle and determine seven winners only once`, async () => {
             const fixture = await loadFixture(deployDynamicRaffleFixture);
             if (!fixture) return;
-            console.log("HERE");
             (await ethers.getSigners()).slice(1, 8).forEach((participant, i) => {
-                console.log(i);
                 const ticketConfirmationNumber = fixture.ticketNumbers[i];
                 const hashedTicketConfirmationNumber = keccak256(toUtf8Bytes(ticketConfirmationNumber));
                 const proof = fixture.merkleTree.getHexProof(hashedTicketConfirmationNumber)
